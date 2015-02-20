@@ -11,7 +11,7 @@ public class TestaRemocao {
 		Connection connection = Database.getConnection();
 		Statement stm = connection.createStatement();
 		
-		stm.execute("delete produto where id>3");
+		stm.execute("delete from produto where id>3");
 		int conta = stm.getUpdateCount();
 		System.out.println("conta " + "linhas atualizadas");
 		
