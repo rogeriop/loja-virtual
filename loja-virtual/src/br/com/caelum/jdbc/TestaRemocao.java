@@ -13,7 +13,7 @@ public class TestaRemocao {
 		
 		stm.execute("delete from produto where id>3");
 		int conta = stm.getUpdateCount();
-		System.out.println("conta " + "linhas atualizadas");
+		System.out.println(conta + " linhas atualizadas");
 		
 		stm.close();
 		connection.close();

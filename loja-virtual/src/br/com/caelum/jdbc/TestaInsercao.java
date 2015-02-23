@@ -9,20 +9,48 @@ import java.sql.Statement;
 public class TestaInsercao {
 	public static void main(String[] args) throws SQLException {
 		
-		String nome = "Produto'n";
-		String descricao = "Descrição do produto 'n";
 		String sql = "insert into Produto (nome, descricao) values (?, ?)";
 		
-		Connection connection = Database.getConnection();
+		try(Connection connection = Database.getConnection()) {
 //		Statement statement = connection.createStatement();
-		
-		PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-		
+
+			connection.setAutoCommit(false);
+			
+			try(PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+			
 //		statement.execute("insert into produto (nome, descricao) values ('Notebook', 'Notebook i5')",
 //				Statement.RETURN_GENERATED_KEYS);
 	
+				String nome = "TV LCD";
+				String descricao = "32 polegadas";
+		
+				adiciona(nome, descricao, statement);
+		
+				nome = "Blueray";
+				descricao = "Full HDMI";
+		
+				adiciona(nome, descricao, statement);
+			connection.commit();
+//			statement.close();
+			} catch (Exception exception) {
+				exception.printStackTrace();
+				connection.rollback();
+				System.out.println("Rollback efetuado com sucesso!");
+			}
+//			connection.close();
+		}
+		
+		
+	}
+
+	private static void adiciona(String nome, String descricao,
+			PreparedStatement statement) throws SQLException {
 		statement.setString(1, nome);
 		statement.setString(2, descricao);
+		
+//		if (nome.equals("Blueray")) {
+//			throw new IllegalArgumentException("Problema ocorrido");
+//		}
 		
 		boolean resultado = statement.execute();
 		
@@ -33,9 +61,6 @@ public class TestaInsercao {
 			System.out.println(id + " gerado");
 		}
 		
-		statement.close();
-		connection.close();
-		
-		
+		resultSet.close();
 	}
 }
