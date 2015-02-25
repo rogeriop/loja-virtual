@@ -11,7 +11,7 @@ public class TestaInsercao {
 		
 		String sql = "insert into Produto (nome, descricao) values (?, ?)";
 		
-		try(Connection connection = Database.getConnection()) {
+		try(Connection connection = ConnectionPool.getConnection()) {
 //		Statement statement = connection.createStatement();
 
 			connection.setAutoCommit(false);

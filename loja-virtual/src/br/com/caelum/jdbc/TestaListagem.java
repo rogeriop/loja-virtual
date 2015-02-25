@@ -8,7 +8,11 @@ import java.sql.Statement;
 
 public class TestaListagem {
 	public static void main(String[] args) throws SQLException {
-		Connection connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/loja-virtual", "SA", "");
+//		Connection connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/loja-virtual", "SA", "");
+
+		ConnectionPool connectionPool = new ConnectionPool();
+		Connection connection = connectionPool.getConnection();
+		
 		Statement statement = connection.createStatement();
 		boolean resultado = statement.execute("SELECT * FROM PRODUTO");
 		ResultSet resultSet = statement.getResultSet();
