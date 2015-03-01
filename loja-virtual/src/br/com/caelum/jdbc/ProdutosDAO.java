@@ -43,19 +43,35 @@ public class ProdutosDAO {
     	 
     	 try(PreparedStatement stm = con.prepareStatement(sql)) {
     		 stm.execute();
-    		 try(ResultSet rs = stm.getResultSet()) {
-    			 while (rs.next()) {
-    				 int id = rs.getInt("id");
-    				 String nome = rs.getString("nome");
-    				 String descricao = rs.getString("descricao");
-    				 Produto produto = new Produto(nome, descricao);
-    				 produto.setId(id);
-    				 produtos.add(produto);
-    			 }
-    		 }
+    		 transformaResultadoEmProdutos(stm, produtos);
     	 }
-    	 
+  
     	 return produtos;
     }
-    
+
+	private void transformaResultadoEmProdutos(PreparedStatement stm, List<Produto> produtos) throws SQLException {
+		try(ResultSet rs = stm.getResultSet()) {
+			 while (rs.next()) {
+				 int id = rs.getInt("id");
+				 String nome = rs.getString("nome");
+				 String descricao = rs.getString("descricao");
+				 Produto produto = new Produto(nome, descricao);
+				 produto.setId(id);
+				 produtos.add(produto);
+			 }
+		 }
+	}
+    public List<Produto> busca(Categoria categoria) throws SQLException {
+    	List<Produto> produtos = new ArrayList<>();
+   	 String sql = "Select * from produto where categoria_id = ?";
+
+   	 try(PreparedStatement stm = con.prepareStatement(sql)) {
+ 		 stm.setInt(1, categoria.getId());
+   		 stm.execute();
+   		 transformaResultadoEmProdutos(stm, produtos);
+   	 }
+ 
+   	 return produtos;
+    	
+    }
 }

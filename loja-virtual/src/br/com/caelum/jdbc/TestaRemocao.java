@@ -8,7 +8,7 @@ public class TestaRemocao {
 
 	public static void main(String[] args) throws SQLException {
 		
-		Connection connection = ConnectionPool.getConnection();
+		Connection connection = new ConnectionPool().getConnection();
 		Statement stm = connection.createStatement();
 		
 		stm.execute("delete from produto where id>3");
